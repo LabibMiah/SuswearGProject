@@ -29,6 +29,7 @@ const CHARITIES = [
 export default function DonationSubmitPage() {
     const router = useRouter();
 
+    //form fields
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState<(typeof CATEGORIES)[number] | "">("");
     const [charityID, setCharityID] = useState<string>("");
