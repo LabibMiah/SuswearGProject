@@ -6,16 +6,16 @@
   text-align: center;
 }
 .Welcome-Info h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: bold; /* bold text*/
   color: var(--accent); 
   margin-bottom: 5px; /*space between the text title and the description below */
 }
 .Welcome-Info p {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   margin-bottom: 30px;
 }
-/* Buttons for Login + Register*/
+/* login register buttons*/
 .Home-Button-area {
   justify-content: center;
   display: flex;
@@ -70,14 +70,14 @@
 }
 .Home-Info-Section h2 {
   color: var(--accent);
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 15px;
   text-align: center;
 }
 .Home-Info-Section p {
   color: #555;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   text-align: center;
 
@@ -127,3 +127,63 @@ footer {
   }
   
 }
+
+/* charities button */
+.Partners-Button-Container {
+text-align: center;
+margin-top: 25px;
+margin-bottom: 20px;
+}
+.Partners-Button {
+position: relative;
+display: inline-block;             
+overflow: hidden;                  
+background-color: var(--accent);
+border: 2px solid var(--accent);
+color: #fff;
+padding: 16px 34px;
+font-size: 1.5rem;
+font-weight: 600;
+text-decoration: none;
+border-radius: 2px;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+.Partners-Button::before {
+content: "";
+position: absolute;
+top: 0;
+left: -100%;                       
+width: 40%;                        
+height: 100%;
+background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+transform: skewX(-25deg);
+opacity: 0.8;
+}
+
+/* shines wqhen u hover on it*/
+.Partners-Button:hover {
+  background-color: var(--accent-hover);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.Partners-Button:hover::before {
+animation: partners-shine 1.1s linear infinite;
+}
+/*shiny animations to appeal users */
+@keyframes partners-shine {
+  0% {
+left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+
+
