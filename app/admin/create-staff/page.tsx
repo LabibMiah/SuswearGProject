@@ -25,15 +25,15 @@ export default function CreateStaffPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage("✅ Staff account created successfully!"); // success message
+        setMessage("Staff account created successfully!"); // success message
         setFullName("");
         setEmail("");
         setPassword("");
       } else {
-        setMessage(`❌ ${data.error || "Error creating staff"}`); // error message
+        setMessage(` ${data.error || "Error creating staff"}`); // error message
       }
     } catch (err) {
-      setMessage("❌ Network error. Please try again."); // network error message
+      setMessage(" Network error. Please try again."); // network error message
     }
   };
 
