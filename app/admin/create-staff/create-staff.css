@@ -8,36 +8,47 @@
 
 .dashboard-bubble {
   max-width: 600px;
-  margin: 30px auto;
-  padding: 24px;
+  margin: 50px auto;
+  padding: 40px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .back-btn {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  align-self: flex-start;
 }
 
-/* Form styling */
 .form {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+  align-items: center;
   margin-top: 16px;
 }
 
 .label {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   font-weight: 600;
   color: var(--text);
+  font-size: 18px;
+  width: 100%;
 }
 
 .input {
-  padding: 12px 14px;
-  border-radius: 10px;
+  padding: 16px 18px;
+  border-radius: 12px;
   border: 1px solid var(--edge);
-  font-size: 14px;
+  font-size: 16px;
+  width: 100%;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -47,20 +58,23 @@
   box-shadow: 0 0 0 3px rgba(0, 184, 169, 0.15);
 }
 
-/* Buttons */
 .primary-btn, .outline-btn {
-  border-radius: 10px;
-  padding: 10px 16px;
+  border-radius: 12px;
+  padding: 16px 24px;
   font-weight: 700;
   cursor: pointer;
   border: 1px solid transparent;
   transition: transform 0.06s ease, box-shadow 0.2s ease;
+  font-size: 18px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .primary-btn {
   background: var(--accent);
   color: #fff;
 }
+
 .primary-btn:hover {
   background: var(--accent-hover);
   transform: translateY(-1px);
@@ -71,42 +85,52 @@
   border-color: var(--accent);
   background: #fff;
 }
+
 .outline-btn:hover {
   background: #eefcf9;
   transform: translateY(-1px);
 }
 
-/* Status messages */
 .status-message {
   margin-top: 16px;
   font-weight: 600;
   color: var(--accent);
+  font-size: 16px;
+  text-align: center;
 }
 
-/* Headings */
 h2 {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--accent);
+  text-align: center;
 }
 
 p {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 12px;
   color: var(--text);
+  text-align: center;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   .dashboard-bubble {
-    padding: 16px;
+    padding: 24px;
     margin: 16px;
   }
   h2 {
     font-size: 24px;
   }
   .input {
-    font-size: 13px;
-    padding: 10px 12px;
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  .primary-btn, .outline-btn {
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+  .label {
+    font-size: 16px;
+    gap: 6px;
   }
 }

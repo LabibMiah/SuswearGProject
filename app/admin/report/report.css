@@ -1,11 +1,13 @@
-/* report css*/
 .report-container {
   max-width: 1000px;
   margin: 50px auto;
-  padding: 40px 40px;
+  padding: 40px 40px; /* Increased consistent padding like dashboard */
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+  /* NEW: Add bottom padding to prevent content touching the page bottom */
+  padding-bottom: 60px;
 }
 
 
@@ -24,6 +26,7 @@
   font-size: 2rem;
   font-weight: 600;
 }
+
 /* back home link*/
 .report-header .back-link {
   color: var(--accent); 
@@ -34,10 +37,9 @@
 .report-header .back-link:hover {
   text-decoration: underline;
   color: var(--accent-hover); 
-
 }
-/* select drop box*/
 
+/* select drop box*/
 .select-data {
   display: flex;
   margin-bottom: 15px;
@@ -53,51 +55,62 @@
   font-size: 1rem;
   border-radius: 6px;
 }
+
 /* select drop box background colour*/
 .select-data select:focus {
   background: #f0fbf8; 
 }
 
-
 /* generate button */
-.generate-btn {
-  background: var(--accent); 
-  font-weight: 500;
+/* download button*/
+.generate-btn,
+.download-btn {
+  background: var(--accent);
   color: #fff;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
+
+  /* ⬆️ Bigger + more readable */
+  padding: 14px 22px; 
+  font-size: 1.05rem;
+
+  border-radius: 10px;
   cursor: pointer;
+
+  /* Match admin button vibe */
+  width: 220px; /* You can increase to 240px or 260px if you want */
+  text-align: center;
+
+  transition: background 0.2s ease;
 }
 
-/* download button */
-.download-btn
-{
-  background: var(--accent); 
-  font-weight: 500;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
+/* Hover effect */
+.generate-btn:hover,
+.download-btn:hover {
+  background: var(--accent-hover);
 }
+
 
 /* generate button when hovering*/
-
 .generate-btn:hover {
-  background: var(--accent-hover); /* uses the global accent hover colour*/
+  background: var(--accent-hover);
 }
+
 /* error message */
 .error {
   color: #ff4d4f;
   margin-top: 10px;
   font-weight: 500;
 }
-/* report output */
 
+/* report output */
 .report-output {
   margin-top: 25px;
+
+  /* NEW: Give extra bottom spacing so last row isn't cramped */
+  padding-bottom: 30px;
 }
+
 /* report title when outputted */
 .report-output h2 {
   font-size: 1.4rem;
@@ -105,25 +118,34 @@
   margin-bottom: 15px;
 }
 
-
-/* report title when outputted */
-
+/* data table */
 .report-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* the data table*/
 .report-table th,
 .report-table td {
   padding: 10px 12px;
   text-align: left;
   border-bottom: 1px solid #e5e7eb;
 }
+
 .report-table th {
   background-color: #f9fafb;
   font-weight: 600;
 }
 
+@media (max-width: 600px) {
+  .select-data {
+    flex-direction: column; /* stack items vertically */
+    align-items: stretch;
+    gap: 10px;
+  }
 
-
+  .generate-btn,
+  .download-btn,
+  .select-data select {
+    width: 100%; /* full width buttons/select on mobile */
+  }
+}
