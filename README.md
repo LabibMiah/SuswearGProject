@@ -14,7 +14,7 @@ You will need to have Node.js https://nodejs.org/en/download (LTS 24.11.0) files
 
 2.Run: npm i
 
-3.Now run another new terminal which will run a local host and to do that click Terminal, New Ternminal then run the command npm run dev
+3.Now run another new terminal which will run a local host and to do that click Terminal, New Terminal then run the command npm run dev
 
 4.Once everything is done hold Control Key (Ctrl) and Left Click the Local: http://localhost:3000
 

@@ -49,6 +49,7 @@
   padding: 20px; 
   box-shadow: var(--shadow); 
   background: #fff; 
+  overflow-x: hidden;
 }
 .card h2 { 
   margin: 0 0 12px; 
@@ -59,6 +60,7 @@
 .table-wrap { 
   border: 1px solid var(--edge); 
   overflow: auto; 
+  width: 100%;
 }
 
 .table {
@@ -161,10 +163,13 @@
   border-radius: 12px;
   max-width: 250px;
   overflow: hidden;
+  width: 100%;
+  max-width: 250px;
+  aspect-ratio: 3 / 4;
 }
 
 .donation-photo {
-  height: auto;
+  height: 100%;
   object-fit: cover;
   width: 100%;
   display: block;
@@ -181,4 +186,44 @@
   { 
     grid-template-columns: 1fr; 
   }
+
+  .details .detail-grid 
+  { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .photo-wrapper{
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .staff-header {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .staff-header h1 {
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+
+  .staff-header .right {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .table{
+    font-size: 14px;
+  }
+
+  .table th, .table td {
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+    
+  
 }
