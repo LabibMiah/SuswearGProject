@@ -165,25 +165,7 @@ transform: skewX(-25deg);
 opacity: 0.8;
 }
 
-/* shines wqhen u hover on it*/
-.Partners-Button:hover {
-  background-color: var(--accent-hover);
-  color: #fff;
-  transform: translateY(-2px);
-}
 
-.Partners-Button:hover::before {
-animation: partners-shine 1.1s linear infinite;
-}
-/*shiny animations to appeal users */
-@keyframes partners-shine {
-  0% {
-left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
 
 
 

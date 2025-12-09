@@ -189,12 +189,6 @@
   animation: partners-shine 1.1s linear infinite;
 }
 
-/* shines animation */
-@keyframes partners-shine {
-  0% { left: -100%; }
-  100% { left: 100%; }
-}
-
 /* to make it responsive*/
 @media (max-width: 980px) {
   .admin-tools {
