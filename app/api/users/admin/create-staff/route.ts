@@ -12,11 +12,13 @@ export async function POST(req: Request) {// Define the POST handler for creatin
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });// Only allow Admin users to create staff accounts
     }
 
-    const { fullName, email, password } = await req.json();// Parse the request body to get staff details
+    const { fullName, email, password, charityId } = await req.json();// Parse the request body to get staff details
 
-    if (!fullName || !email || !password) {
+    if (!fullName || !email || !password || !charityId) {
+      
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });// Validate that all required fields are provided
     }
+
 
     const hash = await bcrypt.hash(password, 10);// Hash the password for secure storage
 
@@ -30,11 +32,12 @@ export async function POST(req: Request) {// Define the POST handler for creatin
     const newUserId = result.lastID;
 
     // Add to Staff
-    await db.run(// Insert new staff member into Staff table
-      `INSERT INTO Staff (User_ID, Full_Name, Email, Password_Hash, User_Role)
-       VALUES (?, ?, ?, ?, 'Staff')`,
-      [newUserId, fullName, email, hash]// Bind parameters to prevent SQL injection
-    );
+   await db.run(
+  `INSERT INTO Staff (User_ID, Full_Name, Email, Password_Hash, User_Role, Charity_ID)
+   VALUES (?, ?, ?, ?, 'Staff', ?)`,
+  [newUserId, fullName, email, hash, charityId]
+);
+
 
     return NextResponse.json({ message: "Staff account created successfully" }, { status: 200 });
   } catch (err) {
@@ -42,3 +45,4 @@ export async function POST(req: Request) {// Define the POST handler for creatin
     return NextResponse.json({ error: "Server error" }, { status: 500 });// Ensure any errors are logged and a generic error response is returned.
   }
 }
+

@@ -1,25 +1,65 @@
 "use client";
-
-import { useState } from "react";
+//used to handle imports needed for the methods below
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import "./create-staff.css";
+
+
+type Charity = {
+  Charity_ID: number;
+  Charity_Name: string;
+};
+
 
 // Page component for creating a new staff account
 export default function CreateStaffPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [charityId, setCharityId] = useState<number | "">("");
+  const [charities, setCharities] = useState<Charity[]>([]);
+
+  //loads charities for the creation
+  useEffect(() => {
+  (async () => {
+    try {
+      const res = await fetch("/api/charity/list", {
+        cache: "no-store",
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Failed to load charities");
+      const data: Charity[] = await res.json();
+      setCharities(data);
+    } catch (err) {
+      console.error(err);
+    }
+  })();
+}, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
 
+    // Ensure both password fields match
+    if (password !== confirmPassword) {
+    setMessage("Incorrect password entered. Passwords must match.");
+    return;
+    }
+
+    if (!charityId) {
+    setMessage("Please select a charity.");
+    return;
+    }
+
+
     try {
       const res = await fetch("/api/users/admin/create-staff", { //api route to create staff
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, password }),
+        body: JSON.stringify({ fullName, email, password, charityId }),
       });
 
       const data = await res.json();
@@ -29,12 +69,14 @@ export default function CreateStaffPage() {
         setFullName("");
         setEmail("");
         setPassword("");
+        setConfirmPassword("");
       } else {
         setMessage(` ${data.error || "Error creating staff"}`); // error message
       }
     } catch (err) {
       setMessage(" Network error. Please try again."); // network error message
     }
+    
   };
 
   return (
@@ -81,6 +123,35 @@ export default function CreateStaffPage() {
               required
             />
           </label>
+
+          <label className="label">
+            Confirm Password
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="input"
+              required
+            />
+          </label>
+
+          <label className="label">
+          Assigned Charity
+         <select
+         value={charityId}
+         onChange={(e) => setCharityId(Number(e.target.value))}
+         className="input"
+          required
+           >
+          <option value="">Select a charity</option>
+           {charities.map((c) => (
+           <option key={c.Charity_ID} value={c.Charity_ID}>
+          {c.Charity_Name}
+          </option>
+          ))}
+          </select>
+         </label>
+
 
           <button type="submit" className="primary-btn">Create Staff</button>
         </form>
