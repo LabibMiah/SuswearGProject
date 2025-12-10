@@ -20,7 +20,11 @@ You will need to have Node.js https://nodejs.org/en/download (LTS 24.11.0) files
 
 Logins: 
 Admin: alice.admin@sustainwear.org hash_admin
+
 Staff: MarkYoung@example.com Password123
+Staff: JohnMarston@gmail.com Password123
+Staff: JamesSmith@gmail.com  Password123
+
 Donor: katiejones@example.com katie123
 
 
