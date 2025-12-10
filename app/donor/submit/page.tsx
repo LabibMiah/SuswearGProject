@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "../donor.css";
 
@@ -13,6 +13,11 @@ const CATEGORIES = [
   "Tops",
 ] as const;
 
+type Charity = {
+  Charity_ID: number;
+  Charity_Name: string;
+};
+
 export default function DonationSubmitPage() {
   const router = useRouter();
 
@@ -20,6 +25,25 @@ export default function DonationSubmitPage() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number] | "">("");
   const [weightKg, setWeightKg] = useState<number | "">("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [charities, setCharities] = useState<Charity[]>([]);
+  const [selectedCharity, setSelectedCharity] = useState<number | "">("");
+
+  // Fetch charities on mount
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/charity/list", {
+          cache: "no-store",
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error("Failed to load charities");
+        const data: Charity[] = await res.json();
+        setCharities(data);
+      }   catch (err) {
+        console.error(err);
+      }
+    })();
+  },[]);
 
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -50,7 +74,7 @@ export default function DonationSubmitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!description.trim() || !category || !weightKg || !photoFile) {
+    if (!description.trim() || !category || !weightKg || !photoFile  ||  !selectedCharity) {
       setMessage({
         type: "error",
         text: "You must complete all fields including an image.",
@@ -69,6 +93,8 @@ export default function DonationSubmitPage() {
         typeof weightKg === "number" ? weightKg.toString() : String(weightKg)
       );
       formData.append("photo", photoFile);
+
+        formData.append("charityId", selectedCharity.toString());
 
       const res = await fetch("/api/donations/create", {
         method: "POST",
@@ -151,6 +177,23 @@ export default function DonationSubmitPage() {
               ))}
             </select>
           </label>
+
+          <label className="label">
+  <span>Charity</span>
+  <select
+    className="input"
+    value={selectedCharity}
+    onChange={(e) => setSelectedCharity(Number(e.target.value))}
+    required
+  >
+    <option value="">Select a charity</option>
+    {charities.map((c) => (
+      <option key={c.Charity_ID} value={c.Charity_ID}>
+        {c.Charity_Name}
+      </option>
+    ))}
+  </select>
+</label>
 
           <label className="label">
             <span>Weight (kg)</span>

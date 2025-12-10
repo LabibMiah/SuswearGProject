@@ -17,6 +17,8 @@ type SentDonation = {
   Submitted_At: string;
   Status: string;
   Inventory_Status?: "Arriving" | "InStock" | null;
+   Charity_ID?: number | null; 
+  Charity_Name?: string | null;
 };
 
 export default function SentDonations() {
@@ -26,6 +28,18 @@ export default function SentDonations() {
   const [error, setError] = useState("");
   const [selectedCharities, setSelectedCharities] = useState<Record<number, number>>({});
   const [charities, setCharities] = useState<Charity[]>([]);
+
+  useEffect(() => {
+  if (donations.length > 0) {
+    const initialCharities: Record<number, number> = {};
+    donations.forEach((d) => {
+      if (d.Charity_ID) {
+        initialCharities[d.Donation_ID] = d.Charity_ID; // pre-fill the charity
+      }
+    });
+    setSelectedCharities(initialCharities);
+  }
+}, [donations]);
 
 
   useEffect(() => {
@@ -86,7 +100,7 @@ export default function SentDonations() {
       const res = await fetch("/api/donations/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ donationId, charityId: charityid }),
+        body: JSON.stringify({ donationId }),
         credentials: "include",
       });
 
@@ -171,40 +185,21 @@ export default function SentDonations() {
                   <td>{d.WeightKg?.toFixed(1) ?? "-"}</td>
                   <td>{d.Tracking}</td>
                   <td>{new Date(d.Submitted_At).toLocaleDateString()}</td>
-                    <td>
-                      {d.Inventory_Status === "Arriving" ? (
-                        <>
-                         <select
-                             value={selectedCharities[d.Donation_ID] ?? ""}
-                             onChange={(e) =>
-                              setSelectedCharities((prev) => ({
-                              ...prev,
-                             [d.Donation_ID]: Number(e.target.value),
-                           }))
-                         }
-                         className="charity-select"
-                      >
-                         <option value="">Select a charity</option>
-
-                         {charities.map((c) => (
-                          <option key={c.Charity_ID} value={c.Charity_ID}>
-                              {c.Charity_Name}
-                              </option>
-                             ))}
-                        </select>
-
-                          <button
-                            className="primary-btn"
-                             onClick={() => handleSend(d.Donation_ID)}   
-                            >
-                            Send
-                           </button>
-                             </>
-                             ) : (
-                              <span className="muted">Sent</span>
-                              )} 
-                  
-                </td>
+               <td>
+  {d.Inventory_Status === "Arriving" ? (
+    <>
+      <span>{d.Charity_Name ?? "Unknown charity"}</span>
+      <button
+        className="primary-btn"
+        onClick={() => handleSend(d.Donation_ID)}
+      >
+        Send
+      </button>
+    </>
+  ) : (
+    <span className="muted">{d.Charity_Name ?? "Sent"}</span>
+  )}
+</td>
 
                 </tr>
               ))}

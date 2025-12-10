@@ -25,6 +25,16 @@ export async function POST(req: NextRequest) {
     const wStr = fd.get("weightKg")?.toString();
     const file = fd.get("photo") as File | null;
 
+    const charityInput = fd.get("charityId")?.toString();
+    if (!charityInput) {
+    return NextResponse.json({ error: "Charity not selected." }, { status: 400 });
+    }
+
+    const charityId = Number(charityInput);
+    if (!charityId) {
+    return NextResponse.json({ error: "Bad charity." }, { status: 422 });
+    }
+
     if (!des || !catInput || !wStr || !file) {
       return NextResponse.json({ error: "Missing stuff." }, { status: 400 });
     }
@@ -67,12 +77,14 @@ export async function POST(req: NextRequest) {
     fs.writeFileSync(fullPath, fileBuff);
 
     // Insert donation first
-    const saved = await db.run(
-      `INSERT INTO Donations 
-       (Donor_ID, Description, Category_ID, WeightKg, Status, Submitted_At)
-       VALUES (?, ?, ?, ?, 'Pending', datetime('now'))`,
-      [donorResult.Donor_ID, des, catRow.CategoryID, w]
-    );
+const saved = await db.run(
+  `INSERT INTO Donations 
+   (Donor_ID, Description, Category_ID, WeightKg, Charity_ID, Status, Submitted_At)
+   VALUES (?, ?, ?, ?, ?, 'Pending', datetime('now'))`,
+  [donorResult.Donor_ID, des, catRow.CategoryID, w, charityId]
+);
+
+
 
     const newID = saved.lastID;
 
