@@ -41,6 +41,8 @@ export default function AdminDashboard() {
           <p>Manage your system from here:</p>
         </section>
 
+        
+
         <div className="grid admin-tools">
           {/* this is the report button which will alow you to load in all the reports of each user that is within using this web app*/}
           <div className="card"> {/* a card is basically a container that has some styling with it*/}
@@ -48,6 +50,12 @@ export default function AdminDashboard() {
             <p>View sustainability reports submitted by users.</p>
             <Link href="/admin/report" className="primary-btn" prefetch={false}>Go to Reports</Link> {/* this link will take you to the reports page by going into the admin/report directory inside  of the application*/}
           </div>
+
+             <div className="card">
+              <h3>Charity</h3>
+              <p>View Charity Dashboard And Its Analytics</p>
+             <a href="/charity" className="button button-shop">View Charity</a>
+            </div>
 
           {/* this creates staff memebers, i think the admin should only be allowed to add staff members and they shouldnt be able to register through the user registration page */}
           <div className="card">
@@ -61,6 +69,8 @@ export default function AdminDashboard() {
             <h3>Promote / Depromote</h3>
             <p>Promote donors to staff or depromote staff back to donors.</p>
             <Link href="/admin/promote" className="primary-btn" prefetch={false}>Manage Roles</Link>
+
+      
           </div>
         </div>
       </div>

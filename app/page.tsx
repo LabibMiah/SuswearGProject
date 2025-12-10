@@ -18,7 +18,6 @@ export default function Home() {
                     <div className="Home-Button-area">
                         <a href="/login" className="button">Login</a>
                         <a href="/register" className="button button-outline">Register Here</a>
-                        <a href="/charity" className="button button-shop">Shop</a>
                     </div>
                 </div>
 
