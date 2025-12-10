@@ -3,10 +3,14 @@ import { openDb } from "@/db/db";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await req.json();
+    const { userId, charityId } = await req.json();
 
     if (!userId) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 });// Validate that userId is provided
+    }
+
+    if (!charityId){
+      return NextResponse.json({error:"charityId is required"}, {status: 400})
     }
 
     const db = await openDb();
@@ -28,9 +32,9 @@ export async function POST(req: Request) {
 
     // Insert into Staff table
     await db.run(
-      `INSERT INTO Staff (User_ID, Full_Name, Email, Password_Hash, User_Role)
-       VALUES (?, ?, ?, ?, 'Staff')`,
-      [userId, donor.Full_Name, donor.Email, donor.Password_Hash]// Bind parameters to prevent SQL injection
+      `INSERT INTO Staff (User_ID, Full_Name, Email, Password_Hash, User_Role, Charity_ID)
+       VALUES (?, ?, ?, ?, 'Staff', ?)`,
+      [userId, donor.Full_Name, donor.Email, donor.Password_Hash, charityId]// Bind parameters to prevent SQL injection
     );
 
     // Delete from Donor table

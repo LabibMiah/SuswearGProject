@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import "../promote/promote.css";
 
+type Charity = {
+  Charity_ID: number;
+  Charity_Name: string;
+};
+
 // just the fields we actually need
 type User = {
   User_ID: number;
@@ -15,16 +20,23 @@ export default function PromotePage() {
   const [donorList, setDonorList] = useState<User[]>([]);
   const [staffList, setStaffList] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [charities, setCharities] = useState<Charity[]>([]);
+  const [selectedCharity, setSelectedCharity] = useState<number | "">("");
+
 
   // load donor + staff data
   const loadUsers = async () => {
     try {
       const d = await fetch("/api/users/donors");
       const s = await fetch("/api/users/staff");
+      const c = await fetch("/api/charity/list");
+      
 
       const donorsJson = await d.json();
       const staffJson = await s.json();
+      const charitiesJson = await c.json();
 
+      setCharities(charitiesJson);
       setDonorList(donorsJson);
       setStaffList(staffJson);
     } catch (err) {
@@ -32,6 +44,7 @@ export default function PromotePage() {
     } finally {
       setLoading(false);
     }
+
   };
 
   useEffect(() => {
@@ -40,14 +53,20 @@ export default function PromotePage() {
 
   // move this user to staff
   const makeStaff = async (uid: number) => {
-    const ok = confirm("Turn this donor into staff?");
+
+    if (!selectedCharity) {
+     alert("Please select a charity first");
+     return;
+    }
+
+    const ok = confirm("Turn this donor into staff")
     if (!ok) return;
 
     try {
       const r = await fetch("/api/users/admin/promote-donor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: uid }),
+        body: JSON.stringify({ userId: uid, charityId: selectedCharity}),
       });
 
       const out = await r.json();
@@ -58,12 +77,14 @@ export default function PromotePage() {
       }
 
       alert("Done");
+      setSelectedCharity("");
       loadUsers();
     } catch (e) {
       console.error("promote failed:", e);
       alert("Something went wrong");
     }
   };
+  
 
   // drop staff back to donor
   const removeStaff = async (uid: number) => {
@@ -120,12 +141,26 @@ export default function PromotePage() {
                 <td>{u.Full_Name}</td>
                 <td>{u.Email}</td>
                 <td>
-                  <button
-                    className="primary-btn"
-                    onClick={() => makeStaff(u.User_ID)}
-                  >
-                    Promote
-                  </button>
+                 <select
+                 value={selectedCharity}
+                 onChange={(e) => setSelectedCharity(Number(e.target.value))}
+                 className="input"
+                 required
+                 >
+                  <option value="">Select Charity</option>
+                  {charities.map((c) => (
+                    <option key={c.Charity_ID} value={c.Charity_ID}>
+                      {c.Charity_Name}
+                    </option>
+                  ))}
+                 </select>
+                 <button 
+                 className="primary-btn"
+                 onClick={() => makeStaff(u.User_ID)}
+                 style={{ marginLeft: "10px"}}
+                 >
+                  Promote
+                 </button>
                 </td>
               </tr>
             ))}

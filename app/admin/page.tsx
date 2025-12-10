@@ -51,10 +51,11 @@ export default function AdminDashboard() {
             <Link href="/admin/report" className="primary-btn" prefetch={false}>Go to Reports</Link> {/* this link will take you to the reports page by going into the admin/report directory inside  of the application*/}
           </div>
 
+          {/*this is the charity button for the admin page */}
              <div className="card">
               <h3>Charity</h3>
               <p>View Charity Dashboard And Its Analytics</p>
-             <a href="/charity" className="button button-shop">View Charity</a>
+             <Link href="/admin/charity" className="primary-btn" prefetch={false}>View Charity</Link>
             </div>
 
           {/* this creates staff memebers, i think the admin should only be allowed to add staff members and they shouldnt be able to register through the user registration page */}
