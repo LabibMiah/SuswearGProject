@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     //parse the form data to get the donations info
     const fd = await req.formData();
     const des = fd.get("description")?.toString().trim() || "";
-    const catInput = fd.get("categoryId")?.toString() || "";
+    const catIDstr = fd.get("categoryId")?.toString() || "";
+    const catID = Number(catIDstr);
     const wStr = fd.get("weightKg")?.toString();
     const file = fd.get("photo") as File | null;
 
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Bad charity." }, { status: 422 });
     }
 
-    if (!des || !catInput || !wStr || !file) {
+    if (!des || !catID || !wStr || !file) {
       return NextResponse.json({ error: "Missing stuff." }, { status: 400 });
     }
 
@@ -55,15 +56,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No donor attached." }, { status: 404 });
     }
 
-    // Grab category row
-    const catRow = await db.get<{ CategoryID: number }>(
-      "SELECT CategoryID FROM Categories WHERE Name = ?",
-      [catInput]
-    );
-    if (!catRow) {
-      return NextResponse.json({ error: "Bad category." }, { status: 404 });
-    }
-
     // storing uploads (yeah, could be tidier)
     const outDir = path.join(process.cwd(), "public/uploads");
     if (!fs.existsSync(outDir)) {
@@ -81,7 +73,7 @@ const saved = await db.run(
   `INSERT INTO Donations 
    (Donor_ID, Description, Category_ID, WeightKg, Charity_ID, Status, Submitted_At)
    VALUES (?, ?, ?, ?, ?, 'Pending', datetime('now'))`,
-  [donorResult.Donor_ID, des, catRow.CategoryID, w, charityId]
+  [donorResult.Donor_ID, des, catID, w, charityId]
 );
 
 

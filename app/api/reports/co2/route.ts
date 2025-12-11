@@ -7,21 +7,21 @@ type DonationRow = { Donation_ID: number; Description: string; CategoryName: str
 
 // kg saved per accepted/distributed donation
 const CO2_KG: Record<string, number> = {
-  Clothing: 3.0,
-  Men: 3.5,
-  Women: 3.5,
-  Children: 2.0,
-  "Coats & Jackets": 12.0,
-  Tops: 2.5,
+  "General Clothing": 2.0,
+  "Trousers & Jeans": 3.0,
+  "Hoodies & Sweatshirts": 3.0,
+  "Children's Clothing": 2.0,
+  "Coats & Jackets": 10.0,
+  "Tops & T-Shirts": 1.8,
 };
 
 const LANDFILL_KG: Record<string, number> = {
-  Clothing: 2.5,
-  Men: 2.8,
-  Women: 2.8,
-  Children: 1.5,
+  "General Clothing": 2.0,
+  "Trousers & Jeans": 3.0,
+  "Hoodies & Sweatshirts": 3.0,
+  "Children's Clothing": 2.0,
   "Coats & Jackets": 10.0,
-  Tops: 1.8,
+  "Tops & T-Shirts": 1.8,
 };
 
 const DFLT_CO2 = 3.0;
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     }> = [];
 
     for (const d of donations) {
-      const type = d.CategoryName || "Clothing";
+      const type = d.CategoryName || "General Clothing";
       const c = CO2_KG[type] ?? DFLT_CO2;
       const l = LANDFILL_KG[type] ?? DFLT_LF;
       totalCO2 += c;

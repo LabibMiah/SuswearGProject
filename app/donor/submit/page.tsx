@@ -4,14 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "../donor.css";
 
-const CATEGORIES = [
-  "Clothing",
-  "Men",
-  "Women",
-  "Children",
-  "Coats & Jackets",
-  "Tops",
-] as const;
+type Category = {
+  CategoryID: number;
+  Name: string;
+}
 
 type Charity = {
   Charity_ID: number;
@@ -22,12 +18,30 @@ export default function DonationSubmitPage() {
   const router = useRouter();
 
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<(typeof CATEGORIES)[number] | "">("");
+  const [categoryID, setCategoryID] = useState<number | "">("");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [weightKg, setWeightKg] = useState<number | "">("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [charities, setCharities] = useState<Charity[]>([]);
   const [selectedCharity, setSelectedCharity] = useState<number | "">("");
 
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/categories", {
+          cache: "no-store",
+        });
+        if (!res.ok) throw new Error("Failed to load categories");
+        const data: Category[] = await res.json();
+        setCategories(data);
+      }   catch (err) {
+        console.error(err);
+      }
+    })();
+  },[]);
+  
   // Fetch charities on mount
   useEffect(() => {
     (async () => {
@@ -66,15 +80,16 @@ export default function DonationSubmitPage() {
 
   const resetForm = () => {
     setDescription("");
-    setCategory("");
+    setCategoryID("");
     setWeightKg("");
+    setSelectedCharity("");
     setPhotoFile(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!description.trim() || !category || !weightKg || !photoFile  ||  !selectedCharity) {
+    if (!description.trim() || categoryID === "" || !weightKg || !photoFile  ||  !selectedCharity) {
       setMessage({
         type: "error",
         text: "You must complete all fields including an image.",
@@ -87,7 +102,7 @@ export default function DonationSubmitPage() {
 
       const formData = new FormData();
       formData.append("description", description);
-      formData.append("categoryId", category);
+      formData.append("categoryId", categoryID.toString());
       formData.append(
         "weightKg",
         typeof weightKg === "number" ? weightKg.toString() : String(weightKg)
@@ -163,16 +178,16 @@ export default function DonationSubmitPage() {
             <span>Category</span>
             <select
               className="input"
-              value={category}
+              value={categoryID}
               onChange={(e) =>
-                setCategory(e.target.value as (typeof CATEGORIES)[number])
+                setCategoryID(e.target.value === "" ? "" : Number(e.target.value))
               }
               required
             >
               <option value="">Select…</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
+              {categories.map((c) => (
+                <option key={c.CategoryID} value={c.CategoryID}>
+                  {c.Name}
                 </option>
               ))}
             </select>
