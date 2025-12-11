@@ -22,7 +22,7 @@ Logins:
 
 Admin: alice.admin@sustainwear.org hash_admin
 
-Staff: MarkYoung@example.com Password123
+Staff: MarkYoung@example.com Password123 
 Staff: JohnMarston@gmail.com Password123
 Staff: JamesSmith@gmail.com  Password123
 
