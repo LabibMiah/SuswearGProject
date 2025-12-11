@@ -14,6 +14,11 @@ type PendingDonation = {
   PhotoUrl?: string | null; //stores the photo url
 };
 
+type PendingListResponse = {
+  charityName: string;
+  rows: PendingDonation[];
+};
+
 /** sent to /api/donations/review */
 type ReviewAction = {
   donationId: number;
@@ -32,6 +37,7 @@ export default function StaffDashboard() {
   const [loading, setLoading] = useState(false); //loading (true or false)
   const [message, setMessage] = useState(""); //displays the message
   const [error, setError] = useState("");//passes through the error message 
+  const [charityName, setCharityName] = useState<string | null>(null); //for charity name
   
   //input fields
   const [selected, setSelected] = useState<PendingDonation | null>(null);
@@ -72,8 +78,10 @@ export default function StaffDashboard() {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || "Failed to load the donations.");
       }
-      const data: PendingDonation[] = await res.json();
-      setRows(data);
+
+      const data: PendingListResponse = await res.json();
+      setRows(data.rows);
+      setCharityName(data.charityName || null)
     } 
     catch (e: unknown) 
     {
@@ -166,7 +174,7 @@ export default function StaffDashboard() {
       <span className="back-link" onClick={() => router.push("/")}>
              Back to homepage
           </span>
-        <div className="left"> <h1><strong>Staff Dashboard!</strong></h1></div>
+        <div className="left"> <h1><strong>{charityName ? `${charityName} - Staff Dashboard` : "Staff Dashboard"}</strong></h1></div>
         <div className="right">
           <button className="outline-btn" onClick={refreshList} disabled={loading}> {loading ? "Refreshing…" : "Refresh"} </button>
           <button className="outline-btn logout-btn" onClick={handleLogout}>Logout!</button>
