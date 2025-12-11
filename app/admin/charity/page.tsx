@@ -81,8 +81,6 @@ export default function CharityShop() {
         </button>
          {/*this is the buttons for the header right side*/}
         <div className="Header-Right-Buttons">
-          <a className="button" href="/login">Login</a> {/* Login Button */}
-          <a className="button button-outline" href="/register">Register</a> {/* Register button*/}
         </div>
       </header>
 
