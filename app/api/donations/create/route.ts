@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
     const catID = Number(catIDstr);
     const wStr = fd.get("weightKg")?.toString();
     const file = fd.get("photo") as File | null;
-
     const charityInput = fd.get("charityId")?.toString();
+    
     if (!charityInput) {
     return NextResponse.json({ error: "Charity not selected." }, { status: 400 });
     }

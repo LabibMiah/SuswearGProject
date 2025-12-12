@@ -17,7 +17,7 @@ type SentDonation = {
   Submitted_At: string;
   Status: string;
   Inventory_Status?: "Arriving" | "InStock" | null;
-   Charity_ID?: number | null; 
+  Charity_ID?: number | null; 
   Charity_Name?: string | null;
 };
 
