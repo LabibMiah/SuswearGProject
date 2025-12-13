@@ -16,13 +16,12 @@ sustainwear-web-app@0.1.0 C:\Users\labib\Desktop\Suswear\sustainwear-web-app
 └── (empty)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Our Presentation:  https://youtu.be/ddl0Yj2dLCs
+Our Youtube Presentation:  https://youtu.be/ddl0Yj2dLCs
 
 Our Github: https://github.com/LabibMiah/SuswearGProject.git
 
 Our Jira: https://hallam-team-q8r91dys.atlassian.net/jira/software/projects/SS/summary?atlOrigin=eyJpIjoiY2Q5YjdjOTRmMzhkNDg2YThkY2JiNDIwODE5OGJmZGYiLCJwIjoiaiJ9
 
-Our Youtube Presentation: 
 
 You will need to have Node.js https://nodejs.org/en/download (LTS 24.11.0) files installed onto your hard drive and or Virtual Machine aswell the extention SQLite by alexcvzz
 
